@@ -4,6 +4,7 @@
 	<artifactId>Adverts</artifactId>
 	<version>no-version</version>
 	<packaging>war</packaging>
+	
 	<name>Adverts</name>
 
 	<properties>
@@ -158,7 +159,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>groupProject</finalName>
+		<finalName>Adverts</finalName>
 		<testResources>
 			<testResource>
 				<directory>src/test/java</directory>
