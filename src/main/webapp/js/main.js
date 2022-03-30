@@ -1,4 +1,4 @@
-var rootUrl = "http://localhost:8080/Adverts-0.0.1-SNAPSHOT/rest/"
+var rootUrl = "http://localhost:8080/Adverts/rest/"
 
 $(document).ready(function(){  
 	findAll();
