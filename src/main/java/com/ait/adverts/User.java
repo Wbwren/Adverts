@@ -1,35 +1,44 @@
 package com.ait.adverts;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+
+enum UserType {
+    SELLER, BUYER;
+}
 
 @Entity
-public class Buyer {
+public class User {
 	
 	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int buyerId;
+	private int userId;
 	
-//	@OneToMany(mappedBy = "seller")
-//    private Set<Advert> adverts = new HashSet<>();
+//  @OneToMany(mappedBy = "seller")
+//  private Set<Advert> adverts = new HashSet<>();
 	
 	private String email;
 	private String password;
 	private String saltValue;
 	private String hashValue;
-	private static final long serialVersionUID = 3657551019023598980L;
+    private UserType userType;
+	// private static final long serialVersionUID = 3657551019023598980L;
 
-	public int getId() {
-		return this.buyerId;
+    public void setUserType(UserType userType) {
+		this.userType = userType;
 	}
 
-	public void setId(int buyerId) {
-		this.buyerId = buyerId;
+    public UserType getUserType() {
+		return this.userType;
+	}
+
+    public int getId() {
+		return this.userId;
+	}
+
+	public void setId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getUserId() {
@@ -64,11 +73,10 @@ public class Buyer {
 	
 	public void setSaltValue(String saltValue) {
 		this.saltValue = saltValue;
-	}
-	
+    }
 
 	@Override
 	public String toString() {
-		return "User{" + "buyerId=" + buyerId + ", email='" + email + '\'' + ", password='" + password + '\'' + ", hash='" + hashValue + '\'' + ", salt='" + saltValue + '}';
+		return "User{" + "userId=" + userId + ", email='" + email + '\'' + ", password='" + password + '\'' + ", hash='" + hashValue + '\'' + ", salt='" + saltValue + '}';
 	}
 }
