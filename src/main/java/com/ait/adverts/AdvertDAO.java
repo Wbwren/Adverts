@@ -8,6 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.poi.ddf.EscherColorRef.SysIndexProcedure;
+
 
 @Stateless
 @LocalBean
@@ -15,10 +17,15 @@ public class AdvertDAO {
 	
 	@PersistenceContext
 	private EntityManager em;
+
+	//For mocking purposes
+	public boolean setEntityManager(EntityManager em) {
+		this.em = em;
+		return true;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Advert> getAllAdverts() {
-		System.out.println("got here");
 		Query query=em.createQuery("SELECT a FROM Advert a");
 		return query.getResultList();
 	}

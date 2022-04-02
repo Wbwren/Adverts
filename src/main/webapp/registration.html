@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Adverts</title>
+    <link rel="stylesheet" href="css/bootstrapV4.css" />
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/db8b34a031.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrapV4.js"></script>
+    <script type="text/javascript" src="js/registration.js"></script>
+
+
+</head>
+
+<body>
+
+    <h6 class="font-weight-light">Register a new user</h6>
+
+    <form id="regForm" method="get">
+        <div>
+            <label>User ID *</label>
+            <input type="email" id="userEmail">
+        </div>
+        <div>
+            <label>Password *</label>
+            <input type="password" id="userPassword" class="form-control p_input" value="">
+        </div>
+        <h6>Your password should be between 8 to 20 characters, contain at least one lowercase letter, one uppercase
+            letter, one numeric digit, and one special character.</h6>
+
+        <label>Repeat Password *</label>
+        <input type="password" value="">
+
+
+        <label for="roleSelect">Select Role</label>
+        <select class="form-control form-control-sm" id="roleSelect">
+            <option value="Buyer">Buyer</option>
+            <option value="Seller">Seller</option>
+        </select>
+
+        <button id="btnRegister" class="btn btn-primary btn-block enter-btn">Register</button>
+    </form>
+
+
+</body>
+
+</html>

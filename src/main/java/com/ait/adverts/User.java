@@ -23,7 +23,7 @@ public class User {
 	private String saltValue;
 	private String hashValue;
     private UserType userType;
-	// private static final long serialVersionUID = 3657551019023598980L;
+	private static final long serialVersionUID = 3657551019023598980L;
 
     public void setUserType(UserType userType) {
 		this.userType = userType;

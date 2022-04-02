@@ -24,6 +24,11 @@ public class AdvertWS {
 	
 	@EJB
 	private AdvertDAO advertDao = new AdvertDAO();
+
+	
+	public void setAdvertDao(AdvertDAO advertDao) {
+		this.advertDao = advertDao;
+	}
 	
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
