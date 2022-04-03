@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Adverts</title>
+    <link rel="stylesheet" href="css/bootstrapV4.css" />
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/db8b34a031.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrapV4.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/Adverts">Adverts</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item"><a class="nav-link" href="post-advert.html">Post Advert</a></li>
+
+            <li class="nav-item"><a class="nav-link" href="#">Offers
+                Placed</a></li>
+            <li class="nav-item">
+              <form id="searchForm" class="form-inline my-2 my-lg-0">
+                <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search all adverts..."
+                  aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              </form>
+            </li>
+            <li id="login"><a href="login.html">Login</a></li>
+            <li id="register"><a href="registration.html">Register</a></li>
+            <li id="userProfileNav" class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
+                id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false"></a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Profile</a> <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a id="logOutBtn" class="dropdown-item" href="#">Logout</a>
+              </div>
+            </li>
+          </ul>
+
+        </div>
+      </nav>
+
+    <h6 class="font-weight-light">Post an Advert</h6>
+
+    <form id="advertPostForm" method="get">
+        <div>
+            <label>Title</label>
+            <input type="text" id="advertTitle">
+        </div>
+        <div>
+            <label>Price</label>
+            <input type="text" id="advertPrice">
+        </div>
+        <div>
+            <label>Category</label>
+            <input type="text" id="advertCategory">
+        </div>
+        <div>
+            <label>Description</label>
+            <input type="text" id="advertDescription">
+        </div>
+        <div>
+            <label>Location</label>
+            <input type="text" id="advertLocation">
+        </div>
+        <div>
+            <label>Images</label>
+            <input type="text" id="imagePrimary" value="">
+            <input type="text" id="imageSecondary" value="">
+            <input type="text" id="imageTertiary" value="">
+            <input type="text" id="imageQuaternary" value="">
+        </div>
+        <button id="btnPostAdvert" class="btn btn-primary btn-block enter-btn">Post</button>
+    </form>
+
+
+</body>
+
+</html>

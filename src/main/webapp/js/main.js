@@ -1,7 +1,25 @@
 var rootUrl = "http://localhost:8080/Adverts"
 
-$(document).ready(function(){  
+
+$(document).ready(function(){
 	findAll();
+
+    // Display logged in username
+    let userName = sessionStorage.getItem("loggedInUserId");
+    let profileElement = null;
+    if (userName != null) {
+        $('#userProfileNav').show();
+        profileElement = $('#navbarDropdown')[0];
+        profileElement.innerHTML = userName;
+    } else {
+        $('#login').show();
+        $('#register').show();
+    }
+
+    $(document).on("click", "#logOutBtn", function() {
+        sessionStorage.clear();
+        window.location = rootUrl;
+    });
 	
 	$("#searchForm").submit(function(e) {
 	    e.preventDefault();
@@ -137,7 +155,6 @@ $(document).on("click", "#btnLogin", function(e) {
         success: function(response) {
             sessionStorage.setItem("loggedInUserId", response.userEmail);
             window.location = rootUrl;
-			setUserName();
         },
         error: function(jqXHR, textStatus, errorThrown) {
             $("#loginErrorText").show();
@@ -146,26 +163,44 @@ $(document).on("click", "#btnLogin", function(e) {
     return false;
 });
 
-var loginFormToJSON = function() {
+let loginFormToJSON = function() {
     return JSON.stringify({
         "userId": $('#loginUserEmail').val(),
         "password": $('#loginUserPassword').val(),
     });
 }
 
-// Display logged in username
-let userName = sessionStorage.getItem("loggedInUserId");
-let profileElement = null;
-if (userName != null) {
-	$('#userProfileNav').show();
-	let profileElement = $('#navbarDropdown')[0];
-	profileElement.innerHTML = userName;
-} else {
-	$('#login').show();
-	$('#register').show();
-}
+// Post adverts
+$(document).on("click", "#btnPostAdvert", function(e) {
+    console.log('called');
+    e.preventDefault();
 
-$(document).on("click", "#logOutBtn", function() {
-    sessionStorage.clear();
-    window.location = rootUrl;
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: rootUrl + "/rest/adverts",
+        data: advertFormToJSON(),
+        success: function(response) {
+            window.location = rootUrl;
+			
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            $("#loginErrorText").show();
+        }
+    });
+    return false;
 });
+
+let advertFormToJSON = function() {
+    return JSON.stringify({
+        "title": $('#advertTitle').val(),
+        "askingPrice": $('#advertPrice').val(),
+        "category": $('#advertCategory').val(),
+        "description": $('#advertDescription').val(),
+        "location": $('#advertLocation').val(),
+        "imagePrimary": $('#imagePrimary').val(),
+        "imageSecondary": $('#imageSecondary').val(),
+        "imageTertiary": $('#imageTertiary').val(),
+        "imageQuaternary": $('#imageQuaternary').val()
+    });
+}

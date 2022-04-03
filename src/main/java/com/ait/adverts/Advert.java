@@ -1,7 +1,9 @@
 package com.ait.adverts;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
+import javax.ejb.Local;
 import javax.persistence.CascadeType;
 //import javax.xml.bind.annotation.XmlRootElement;
 import javax.persistence.Entity;
@@ -31,8 +33,11 @@ public class Advert {
     private String category;
     private String description;
     private String location;
-    private String image;
-    private Date datePosted;
+    private String imagePrimary;
+	private String imageSecondary;
+	private String imageTertiary;
+	private String imageQuaternary;
+    private String datePosted;
     private double largestOffer;
     private boolean offerAccepted;
     private String seller;
@@ -93,20 +98,20 @@ public class Advert {
 		this.location = location;
 	}
 
-	public String getImage() {
-		return image;
+	public String getImagePrimary() {
+		return imagePrimary;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setImagePrimary(String imagePrimary) {
+		this.imagePrimary = imagePrimary;
 	}
 
-	public Date getDatePosted() {
+	public String getDatePosted() {
 		return datePosted;
 	}
 
-	public void setDatePosted(Date datePosted) {
-		this.datePosted = datePosted;
+	public void setDatePosted(String localDateTime) {
+		this.datePosted = localDateTime;
 	}
 
 	public double getLargestOffer() {
