@@ -1,10 +1,9 @@
 var rootUrl = "http://localhost:8080/Adverts"
 
+// User Registration
 $(document).on("click", "#btnRegister", function(e) {
     e.preventDefault();
-    let email = $('userEmail').val();
-    let password = $('userPassword').val();
-    console.log(email);
+
     $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -13,8 +12,7 @@ $(document).on("click", "#btnRegister", function(e) {
         success: function(response) {
             console.log('handle success');
             sessionStorage.setItem("loggedInUserId", response.userId);
-            sessionStorage.setItem("loggedInUserRole", response.role);
-            window.location = rootUrl;
+            window.location = rootUrl + "/login.html";
         },
         error: function(jqXHR, textStatus, errorThrown) {
             $("#loginErrorText").show();
@@ -30,3 +28,40 @@ var regFormToJSON = function() {
         "userType": $('#userType').val()
     });
 }
+
+// User Login
+$(document).on("click", "#btnLogin", function(e) {
+    e.preventDefault();
+    console.log(loginFormToJSON());
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: rootUrl + "/rest/users/login",
+        data: loginFormToJSON(),
+        success: function(response) {
+            sessionStorage.setItem("loggedInUserId", response.userEmail);
+            window.location = rootUrl;
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('error thrown: '+ errorThrown);
+            $("#loginErrorText").show();
+        }
+    });
+    return false;
+});
+
+var loginFormToJSON = function() {
+    return JSON.stringify({
+        "userId": $('#loginUserEmail').val(),
+        "password": $('#loginUserPassword').val(),
+    });
+}
+
+$('#navbarDropdown').val = sessionStorage.getItem("loggedInUserId");
+console.log($('#navbarDropdown'));
+
+$(document).on("click", "#logOutBtn", function() {
+    sessionStorage.clear();
+    window.location = loginPage;
+});

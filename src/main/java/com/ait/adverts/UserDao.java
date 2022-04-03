@@ -25,7 +25,7 @@ public class UserDao {
 		Query query = em.createQuery("SELECT u FROM User u");
 		List<User> u = query.getResultList();
 		for(User us: u) {
-			if(us.getUserId().equals(user.getUserId()) && us.getHashValue().equals(user.getHashValue())) {
+			if(us.getUserEmail().equals(user.getUserEmail()) && us.getHashValue().equals(user.getHashValue())) {
 				return us;
 			}
 		}

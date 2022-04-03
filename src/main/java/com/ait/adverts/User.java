@@ -41,7 +41,7 @@ public class User {
 		this.userId = userId;
 	}
 
-	public String getUserId() {
+	public String getUserEmail() {
 		return this.email;
 	}
 

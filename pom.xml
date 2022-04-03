@@ -149,6 +149,21 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>5.3.7.Final</version>
 		</dependency>
+		<!-- For user login - return user object -->
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxb-provider</artifactId>
+			<version>3.0.16.Final</version>
+		</dependency>
+		<dependency>
+
+			<groupId>org.codehaus.jackson</groupId>
+		
+			<artifactId>jackson-jaxrs</artifactId>
+		
+			<version>1.9.13</version>
+		
+		</dependency>
 
 
 		<dependency>

@@ -1,4 +1,4 @@
-var rootUrl = "http://localhost:8080/Adverts/rest/"
+var rootUrl = "http://localhost:8080/Adverts"
 
 $(document).ready(function(){  
 	findAll();
@@ -14,17 +14,16 @@ $(document).ready(function(){
 var findAll = function() {
 	$.ajax({
 		type: 'GET',
-		url: rootUrl + "adverts",
+		url: rootUrl + "/rest/adverts",
 		dataType: "json",
 		success: renderList
 	});
 }
 
 var findByKeyword = function(title) {
-	console.log('finding by keyword:'+title);
 	$.ajax({
 		type: 'GET',
-		url: rootUrl + 'adverts/search/' + title,
+		url: rootUrl + '/rest/adverts/search/' + title,
 		dataType: "json",
 		success: renderList
 	});
@@ -37,7 +36,6 @@ var renderList= function(data) {
 	
 	let i = 1;
 	$.each(list, function(index, advert) {
-		console.log(advert.title);
 	    
 		if (i === 1) {
 			templateStr += '<div class="row hidden-md-up justify-content-md-center">';
@@ -97,3 +95,77 @@ let fetchAdvertId = function () {
 	let url = new URL(window.location.href);
 	return url.searchParams.get("advert");
 }
+
+
+// User Registration
+$(document).on("click", "#btnRegister", function(e) {
+    e.preventDefault();
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: rootUrl + "/rest/users/register",
+        data: regFormToJSON(),
+        success: function(response) {
+            sessionStorage.setItem("loggedInUserId", response.userId);
+            window.location = rootUrl + "/login.html";
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            $("#loginErrorText").show();
+        }
+    });
+    return false;
+});
+
+var regFormToJSON = function() {
+    return JSON.stringify({
+        "userId": $('#userEmail').val(),
+        "password": $('#userPassword').val(),
+        "userType": $('#userType').val()
+    });
+}
+
+// User Login
+$(document).on("click", "#btnLogin", function(e) {
+    e.preventDefault();
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: rootUrl + "/rest/users/login",
+        data: loginFormToJSON(),
+        success: function(response) {
+            sessionStorage.setItem("loggedInUserId", response.userEmail);
+            window.location = rootUrl;
+			setUserName();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            $("#loginErrorText").show();
+        }
+    });
+    return false;
+});
+
+var loginFormToJSON = function() {
+    return JSON.stringify({
+        "userId": $('#loginUserEmail').val(),
+        "password": $('#loginUserPassword').val(),
+    });
+}
+
+// Display logged in username
+let userName = sessionStorage.getItem("loggedInUserId");
+let profileElement = null;
+if (userName != null) {
+	$('#userProfileNav').show();
+	let profileElement = $('#navbarDropdown')[0];
+	profileElement.innerHTML = userName;
+} else {
+	$('#login').show();
+	$('#register').show();
+}
+
+$(document).on("click", "#logOutBtn", function() {
+    sessionStorage.clear();
+    window.location = rootUrl;
+});
