@@ -3,6 +3,7 @@ var rootUrl = "http://localhost:8080/Adverts"
 // User Registration
 $(document).on("click", "#btnRegister", function(e) {
     e.preventDefault();
+    console.log(regFormToJSON());
 
     $.ajax({
         type: "POST",
@@ -25,7 +26,7 @@ var regFormToJSON = function() {
     return JSON.stringify({
         "userId": $('#userEmail').val(),
         "password": $('#userPassword').val(),
-        "userType": $('#userType').val()
+        "userType": $('#userType').options[$('#userType').selectedIndex].text
     });
 }
 

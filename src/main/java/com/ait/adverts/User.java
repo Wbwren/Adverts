@@ -5,10 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-enum UserType {
-    SELLER, BUYER;
-}
-
 @Entity
 public class User {
 	
@@ -22,14 +18,14 @@ public class User {
 	private String password;
 	private String saltValue;
 	private String hashValue;
-    private UserType userType;
+    private String userType;
 	private static final long serialVersionUID = 3657551019023598980L;
 
-    public void setUserType(UserType userType) {
+    public void setUserType(String userType) {
 		this.userType = userType;
 	}
 
-    public UserType getUserType() {
+    public String getUserType() {
 		return this.userType;
 	}
 

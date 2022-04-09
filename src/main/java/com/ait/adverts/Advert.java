@@ -1,7 +1,8 @@
 package com.ait.adverts;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.sql.Date;
 
 import javax.ejb.Local;
 import javax.persistence.CascadeType;
@@ -37,7 +38,7 @@ public class Advert {
 	private String imageSecondary;
 	private String imageTertiary;
 	private String imageQuaternary;
-    private String datePosted;
+    private Date datePosted;
     private double largestOffer;
     private boolean offerAccepted;
     private String seller;
@@ -106,11 +107,35 @@ public class Advert {
 		this.imagePrimary = imagePrimary;
 	}
 
-	public String getDatePosted() {
+	public String getImageSecondary() {
+		return imageSecondary;
+	}
+
+	public void setImageSecondary(String imageSecondary) {
+		this.imageSecondary = imageSecondary;
+	}
+
+	public String imageTertiary() {
+		return imageTertiary;
+	}
+
+	public void imageTertiary(String imageTertiary) {
+		this.imageTertiary = imageTertiary;
+	}
+
+	public String imageQuaternary() {
+		return imageQuaternary;
+	}
+
+	public void imageQuaternary(String imageQuaternary) {
+		this.imageQuaternary = imageQuaternary;
+	}
+
+	public Date getDatePosted() {
 		return datePosted;
 	}
 
-	public void setDatePosted(String localDateTime) {
+	public void setDatePosted(Date localDateTime) {
 		this.datePosted = localDateTime;
 	}
 
@@ -128,6 +153,9 @@ public class Advert {
 
 	public void setOfferAccepted(boolean offerAccepted) {
 		this.offerAccepted = offerAccepted;
+	}
+
+	public void setDatePosted(LocalDate now) {
 	}
     
    

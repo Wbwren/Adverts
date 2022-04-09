@@ -54,6 +54,7 @@ var renderList= function(data) {
 	
 	let i = 1;
 	$.each(list, function(index, advert) {
+        console.log(advert.datePosted);
 	    
 		if (i === 1) {
 			templateStr += '<div class="row hidden-md-up justify-content-md-center">';
@@ -63,7 +64,7 @@ var renderList= function(data) {
 		templateStr += '<a href="advert.html?advert='+advert.id+'">';
 		templateStr += '<div class="card">';
 		templateStr += '<div class="card-block">';
-		templateStr += '<img class="card-img-top" style="height: 140px; overflow:hidden " src="img/'+advert.image+'" alt="Card image cap">';
+		templateStr += '<img class="card-img-top" style="height: 140px; overflow:hidden " src="img/'+advert.imagePrimary+'" alt="Card image cap">';
 		templateStr += '<div class="card-body">';
 		templateStr += '<h5 class="card-title">'+ advert.title +'</h5>';
 		templateStr += '<h5 class="card-title">'+ advert.askingPrice +'</h5>';
@@ -91,7 +92,8 @@ function calcPostDate(postDate) {
     const month = day * 30;
     const year = day * 365;
 
-    var timeDifference = Date.now() - postDate;
+    var now = Date.now();
+    var timeDifference = now - new Date(postDate);
 
     if (timeDifference < minute) {
          return Math.round(timeDifference/1000) + ' seconds ago';   

@@ -1,8 +1,9 @@
 package com.ait.adverts;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -18,8 +19,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.apache.james.mime4j.dom.datetime.DateTime;
 
 
 @Path("/adverts")
@@ -53,16 +52,16 @@ public class AdvertWS {
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveAdvert(Advert advert) {
-		advert.setDatePosted(getDateNow());
+		advert.setDatePosted(LocalDate.of(2012, 02, 02));
 		advertDao.save(advert);
 		return Response.status(201).entity(advert).build();
 	}
 
-	private String getDateNow() {
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("YYYY/MMM/dd 'at' HH:mm");
-        LocalDateTime localDateTime = LocalDateTime.of(2018, 3, 17, 22, 10);
-		return format.format(localDateTime);
-	}
+	// private String getDateNow() {
+	// 	DateTimeFormatter format = DateTimeFormatter.ofPattern("YYYY/MMM/dd 'at' HH:mm");
+    //     LocalDateTime localDateTime = LocalDateTime.of(2018, 3, 17, 22, 10);
+	// 	return format.format(localDateTime);
+	// }
 	
 	@PUT
 	@Path("/{id}")

@@ -31,6 +31,9 @@ public class UserService {
 				return Response.status(409).build();
 			}
 		}
+		System.out.println("here");
+		System.out.println(user.getUserEmail());
+		System.out.println(user.getUserType());
 		userDao.register(user);
 		return Response.status(201).entity(user).build();
 	}
