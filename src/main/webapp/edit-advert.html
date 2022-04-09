@@ -10,7 +10,7 @@
     <script type="text/javascript" src="js/jquery.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrapV4.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/seller.js"></script>
 
 
 </head>
@@ -26,7 +26,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
 
-            <li class="nav-item"><a class="nav-link" href="post-advert.html">Post Advert</a></li>
+            <li class="nav-item"><a class="nav-link" href="post-advert.html">Edit Advert</a></li>
 
             <li class="nav-item"><a class="nav-link" href="#">Offers
                 Placed</a></li>
@@ -53,9 +53,9 @@
         </div>
       </nav>
 
-    <h6 class="font-weight-light">Post an Advert</h6>
+    <h6 class="font-weight-light">Edit This Advert</h6>
 
-    <form id="advertPostForm" method="get">
+    <form id="advertPostForm" method="put">
         <div>
             <label>Title</label>
             <input type="text" id="advertTitle">
@@ -83,7 +83,7 @@
             <input type="text" id="imageTertiary" value="">
             <input type="text" id="imageQuaternary" value="">
         </div>
-        <button id="btnPostAdvert" class="btn btn-primary btn-block enter-btn">Post</button>
+        <button id="btnEditAdvert" class="btn btn-primary btn-block enter-btn">Post</button>
     </form>
 
 

@@ -37,11 +37,14 @@ public class Advert {
     private String imagePrimary;
 	private String imageSecondary;
 	private String imageTertiary;
+
+
 	private String imageQuaternary;
     private Date datePosted;
     private double largestOffer;
     private boolean offerAccepted;
     private String seller;
+	private String buyer;
 
 	public int getId() {
 		return id;
@@ -57,6 +60,14 @@ public class Advert {
 	
 	public void setSeller(String seller) {
 		this.seller = seller;
+	}
+
+	public String getBuyer() {
+		return buyer;
+	}
+
+	public void setBuyer(String buyer) {
+		this.buyer = buyer;
 	}
 
 	public String getTitle() {
@@ -115,19 +126,19 @@ public class Advert {
 		this.imageSecondary = imageSecondary;
 	}
 
-	public String imageTertiary() {
+	public String getImageTertiary() {
 		return imageTertiary;
 	}
 
-	public void imageTertiary(String imageTertiary) {
+	public void setImageTertiary(String imageTertiary) {
 		this.imageTertiary = imageTertiary;
 	}
 
-	public String imageQuaternary() {
+	public String getImageQuaternary() {
 		return imageQuaternary;
 	}
 
-	public void imageQuaternary(String imageQuaternary) {
+	public void setImageQuaternary(String imageQuaternary) {
 		this.imageQuaternary = imageQuaternary;
 	}
 
@@ -135,8 +146,8 @@ public class Advert {
 		return datePosted;
 	}
 
-	public void setDatePosted(Date localDateTime) {
-		this.datePosted = localDateTime;
+	public void setDatePosted(Date datePosted) {
+		this.datePosted = datePosted;
 	}
 
 	public double getLargestOffer() {
@@ -154,11 +165,5 @@ public class Advert {
 	public void setOfferAccepted(boolean offerAccepted) {
 		this.offerAccepted = offerAccepted;
 	}
-
-	public void setDatePosted(LocalDate now) {
-	}
-    
-   
-
 }
 

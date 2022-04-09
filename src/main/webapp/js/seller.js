@@ -2,8 +2,7 @@ var rootUrl = "http://localhost:8080/Adverts"
 
 
 $(document).ready(function(){
-	findAll();
-
+    
     // Display logged in username
     let userName = sessionStorage.getItem("loggedInUserId");
     let profileElement = null;
@@ -15,6 +14,14 @@ $(document).ready(function(){
         $('#login').show();
         $('#register').show();
     }
+	if ( document.URL.includes("seller-adverts.html") ) {
+		findBySeller(userName);
+	}
+    
+
+	if ( document.URL.includes("edit-advert.html") ) {
+		populateAdvertFields();
+	}
 
     $(document).on("click", "#logOutBtn", function() {
         sessionStorage.clear();
@@ -29,10 +36,10 @@ $(document).ready(function(){
 });
 
 
-var findAll = function() {
+var findBySeller = function(userName) {
 	$.ajax({
 		type: 'GET',
-		url: rootUrl + "/rest/adverts",
+		url: rootUrl + '/rest/adverts/search/seller/' + userName,
 		dataType: "json",
 		success: renderList
 	});
@@ -61,7 +68,7 @@ var renderList= function(data) {
 		}
 		
 		templateStr += '<div class="col-md-2 col-lg-2 col-sm-12">';
-		templateStr += '<a href="advert.html?advert='+advert.id+'">';
+		templateStr += '<a href="edit-advert.html?advert='+advert.id+'">';
 		templateStr += '<div class="card">';
 		templateStr += '<div class="card-block">';
 		templateStr += '<img class="card-img-top" style="height: 140px; overflow:hidden " src="img/'+advert.imagePrimary+'" alt="Card image cap">';
@@ -71,8 +78,18 @@ var renderList= function(data) {
 		templateStr += '<p class="card-text">'+advert.description+'</p>';
 		templateStr += '<div class="card-footer">';
 		templateStr += '<small class="text-muted"><i class="fas fa-clock"></i> Posted: '+ calcPostDate(advert.datePosted) +'<br><i class="fas fa-user"></i> Seller: '+advert.seller+'<br><i class="fas fa-map"></i> Location: '+advert.location+'</small><i class="fa-solid fa-location-dot"></i></div></div>';
+		
 		templateStr += '</div></div>';
-		templateStr += '</a></div>';
+		templateStr += '</a>';
+		if(advert.offerAccepted) {
+			templateStr += '<h5>'+'Offer Accepted. Buyer Contact: '+ advert.buyer +' </h5>';
+		}
+		if(advert.largestOffer > 0) {
+			templateStr += '<h5>'+'Offer placed for: ' + advert.largestOffer + '</h5>';
+			templateStr += '<a onclick="acceptOffer('+advert.id+')" href="#">Accept Offer</a></div>';
+		} else {
+			templateStr += '</div>';
+		}
 		if (i === 4) {
 			templateStr += '</div>';
 			i = 1;
@@ -117,77 +134,45 @@ let fetchAdvertId = function () {
 }
 
 
-// User Registration
-$(document).on("click", "#btnRegister", function(e) {
-    e.preventDefault();
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: rootUrl + "/rest/users/register",
-        data: regFormToJSON(),
-        success: function(response) {
-            sessionStorage.setItem("loggedInUserId", response.userId);
-            window.location = rootUrl + "/login.html";
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            $("#loginErrorText").show();
-        }
-    });
-    return false;
-});
-
-var regFormToJSON = function() {
-    return JSON.stringify({
-        "userId": $('#userEmail').val(),
-        "password": $('#userPassword').val(),
-        "userType": $('#userType').val()
-    });
+function populateAdvertFields() {
+	let advertId = fetchAdvertId();
+	let advert = fetchAdvertObj(advertId);
 }
 
-// User Login
-$(document).on("click", "#btnLogin", function(e) {
-    e.preventDefault();
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: rootUrl + "/rest/users/login",
-        data: loginFormToJSON(),
-        success: function(response) {
-            sessionStorage.setItem("loggedInUserId", response.userEmail);
-            window.location = rootUrl;
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            $("#loginErrorText").show();
-        }
-    });
-    return false;
-});
-
-let loginFormToJSON = function() {
-    return JSON.stringify({
-        "userId": $('#loginUserEmail').val(),
-        "password": $('#loginUserPassword').val(),
-    });
+function fetchAdvertObj(advertId) {
+	$.ajax({
+		type: 'GET',
+		url: rootUrl + '/rest/adverts/' + advertId,
+		dataType: "json",
+		success: fillFieldData
+	});
 }
 
-// Post adverts
-$(document).on("click", "#btnPostAdvert", function(e) {
-    console.log('called');
+function fillFieldData(advert) {
+	$('#advertTitle').attr('value', advert.title);
+	$('#advertPrice').attr('value', advert.askingPrice);
+	$('#advertCategory').attr('value', advert.category);
+	$('#advertDescription').attr('value', advert.description);
+	$('#advertLocation').attr('value', advert.location);
+	$('#imagePrimary').attr('value', advert.imagePrimary);
+	$('#imageSecondary').attr('value', advert.imageSecondary);
+	$('#imageTertiary').attr('value', advert.imageTertiary);
+	$('#imageQuaternary').attr('value', advert.imageQuaternary);
+}
+
+$(document).on("click", "#btnEditAdvert", function(e) {
     e.preventDefault();
-    console.log(advertFormToJSON());
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: rootUrl + "/rest/adverts/",
+        url: rootUrl + "/rest/adverts/edit",
         data: advertFormToJSON(),
         success: function(response) {
             window.location = rootUrl;
 			
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.log('error posting advert...');
+            console.log('error updating advert...');
             $("#loginErrorText").show();
         }
     });
@@ -196,6 +181,7 @@ $(document).on("click", "#btnPostAdvert", function(e) {
 
 let advertFormToJSON = function() {
     return JSON.stringify({
+		"id":fetchAdvertId(),
         "title": $('#advertTitle').val(),
         "askingPrice": $('#advertPrice').val(),
         "category": $('#advertCategory').val(),
@@ -207,3 +193,7 @@ let advertFormToJSON = function() {
         "imageQuaternary": $('#imageQuaternary').val()
     });
 }
+
+function acceptOffer(advertId) {
+	console.log(advertId);
+};

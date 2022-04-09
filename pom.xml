@@ -150,11 +150,11 @@
 			<version>5.3.7.Final</version>
 		</dependency>
 		<!-- For user login - return user object -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxb-provider</artifactId>
 			<version>3.0.16.Final</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 
 			<groupId>org.codehaus.jackson</groupId>
@@ -164,6 +164,14 @@
 			<version>1.9.13</version>
 		
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-jaxb-annotations
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-jaxb-annotations</artifactId>
+			<version>2.13.2</version>
+		</dependency> -->
+		
+
 
 
 		<dependency>

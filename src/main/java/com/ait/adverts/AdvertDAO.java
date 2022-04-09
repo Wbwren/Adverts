@@ -37,6 +37,8 @@ public class AdvertDAO {
 	}
 
 	public void update(Advert advert) {
+		System.out.println("Attempting to update advert");
+
 		em.merge(advert);
 	}
 
@@ -50,4 +52,19 @@ public class AdvertDAO {
 		query.setParameter(1, "%"+keyword.toUpperCase()+"%");
 		return query.getResultList();
 	}
+
+	@SuppressWarnings("unchecked")
+    public List<Advert> getAdvertsBySeller(String username) {
+        Query query = em.createQuery("SELECT w FROM Advert w WHERE w.seller LIKE ?1");
+		query.setParameter(1, "%"+username.toUpperCase()+"%");
+		return query.getResultList();
+    }
+
+    public void acceptOffer(int id) {
+		Query query = em.createQuery("ALTER table Advert set offerAccepted = true WHERE w.id LIKE ?1");
+		query.setParameter(1, "%"+id+"%");
+		Advert advert = em.find(Advert.class, id);
+		advert.setOfferAccepted(true);
+		// return query.getResultList();
+    }
 }

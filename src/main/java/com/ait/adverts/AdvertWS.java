@@ -20,6 +20,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.net.SyslogAppender;
+
 
 @Path("/adverts")
 @Stateless
@@ -50,11 +52,21 @@ public class AdvertWS {
 	}
 	
 	@POST
-	@Produces({ MediaType.APPLICATION_JSON })
+    @Path("/post")
+	@Produces({MediaType.APPLICATION_JSON})
 	public Response saveAdvert(Advert advert) {
-		advert.setDatePosted(LocalDate.of(2012, 02, 02));
+		//advert.setDatePosted(LocalDate.of(2012, 02, 02));
 		advertDao.save(advert);
 		return Response.status(201).entity(advert).build();
+	}
+
+	@POST
+    @Produces({ MediaType.APPLICATION_JSON })
+	@Path("/accept-offer/{id}")
+	public Response acceptOffer(@PathParam("id") int id) {
+		//advert.setDatePosted(LocalDate.of(2012, 02, 02));
+		advertDao.acceptOffer(id);
+		return Response.status(200).build();
 	}
 
 	// private String getDateNow() {
@@ -64,10 +76,11 @@ public class AdvertWS {
 	// }
 	
 	@PUT
-	@Path("/{id}")
+	@Path("/edit")
 	@Consumes("application/json")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response updateAdvert(Advert advert) {
+		System.out.println("edit advert dao");
 		advertDao.update(advert);
 		return Response.status(200).entity(advert).build();
 	}
@@ -83,6 +96,12 @@ public class AdvertWS {
 	@Produces({ MediaType.APPLICATION_JSON,  MediaType.APPLICATION_XML })
 	public List<Advert> findByKeyword(@PathParam("query") String query) {
 		return advertDao.getAdvertsByKeyword(query);
+	}
+
+	@GET @Path("/search/seller/{userName}")
+	@Produces({ MediaType.APPLICATION_JSON,  MediaType.APPLICATION_XML })
+	public List<Advert> findBySeller(@PathParam("userName") String query) {
+		return advertDao.getAdvertsBySeller(query);
 	}
 	
 }
