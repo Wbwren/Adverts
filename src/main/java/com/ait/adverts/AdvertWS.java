@@ -60,10 +60,11 @@ public class AdvertWS {
 		return Response.status(201).entity(advert).build();
 	}
 
-	@POST
+	@PUT
     @Produces({ MediaType.APPLICATION_JSON })
 	@Path("/accept-offer/{id}")
 	public Response acceptOffer(@PathParam("id") int id) {
+		System.out.println("in ws");
 		//advert.setDatePosted(LocalDate.of(2012, 02, 02));
 		advertDao.acceptOffer(id);
 		return Response.status(200).build();

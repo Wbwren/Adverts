@@ -78,13 +78,11 @@ var renderList= function(data) {
 		templateStr += '<p class="card-text">'+advert.description+'</p>';
 		templateStr += '<div class="card-footer">';
 		templateStr += '<small class="text-muted"><i class="fas fa-clock"></i> Posted: '+ calcPostDate(advert.datePosted) +'<br><i class="fas fa-user"></i> Seller: '+advert.seller+'<br><i class="fas fa-map"></i> Location: '+advert.location+'</small><i class="fa-solid fa-location-dot"></i></div></div>';
-		
 		templateStr += '</div></div>';
 		templateStr += '</a>';
 		if(advert.offerAccepted) {
 			templateStr += '<h5>'+'Offer Accepted. Buyer Contact: '+ advert.buyer +' </h5>';
-		}
-		if(advert.largestOffer > 0) {
+		} else if(advert.largestOffer > 0) {
 			templateStr += '<h5>'+'Offer placed for: ' + advert.largestOffer + '</h5>';
 			templateStr += '<a onclick="acceptOffer('+advert.id+')" href="#">Accept Offer</a></div>';
 		} else {
@@ -195,5 +193,19 @@ let advertFormToJSON = function() {
 }
 
 function acceptOffer(advertId) {
-	console.log(advertId);
+	
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: rootUrl + "/rest/adverts/accept-offer/"+advertId,
+        success: function(response) {
+            window.location = rootUrl+'/seller-adverts.html';
+			
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('error updating advert...');
+            $("#loginErrorText").show();
+        }
+    });
+    return false;
 };

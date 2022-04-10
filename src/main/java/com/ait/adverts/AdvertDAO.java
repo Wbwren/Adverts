@@ -61,10 +61,9 @@ public class AdvertDAO {
     }
 
     public void acceptOffer(int id) {
-		Query query = em.createQuery("ALTER table Advert set offerAccepted = true WHERE w.id LIKE ?1");
-		query.setParameter(1, "%"+id+"%");
+		System.out.println("accept offer called");
 		Advert advert = em.find(Advert.class, id);
 		advert.setOfferAccepted(true);
-		// return query.getResultList();
+		update(advert);
     }
 }
