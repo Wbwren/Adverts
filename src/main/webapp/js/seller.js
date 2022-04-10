@@ -80,10 +80,10 @@ var renderList= function(data) {
 		templateStr += '</div></div>';
 		templateStr += '</a>';
 		if(advert.offerAccepted) {
-			templateStr += '<h5>'+'Offer Accepted. Buyer Contact: '+ advert.buyer +' </h5></div>';
+			templateStr += '<h5>'+'Offer Accepted.<br>Buyer Contact: '+ advert.buyer +' </h5></div>';
 		} else if(advert.largestOffer > 0) {
 			templateStr += '<h5>'+'Offer placed for: ' + advert.largestOffer + '</h5>';
-			templateStr += '<div>Buyer Rating: ' + advert.buyerRating + '<i class="fa-solid fa-star-sharp"></i></div>';
+			templateStr += '<div>Buyer Rating: ' + advert.buyerRating + '<i class="fas fa-star"></i></div>';
 			templateStr += '<a onclick="acceptOffer('+advert.id+')" href="#">Accept Offer</a></div>';
 		} else {
 			templateStr += '</div>';
@@ -192,13 +192,6 @@ async function advertFormToJSON() {
 	} catch(e) {
 		console.log(e);
 	}
-	console.log(advert.seller);
-	console.log(advert);
-	console.log(advert.largestOffer);
-	console.log(advert.offerAccepted);
-	console.log(advert.seller);
-	console.log(advert.buyer);
-	console.log(advert.buyerRating);
 	return JSON.stringify({
 		"id":fetchAdvertId(),
         "title": $('#advertTitle').val(),
@@ -210,7 +203,7 @@ async function advertFormToJSON() {
         "imageSecondary": $('#imageSecondary').val(),
         "imageTertiary": $('#imageTertiary').val(),
         "imageQuaternary": $('#imageQuaternary').val(),
-		//"datePosted": advert.datePosted,
+		"datePosted": advert.datePosted,
 		"largestOffer": advert.largestOffer,
 		"offerAccepted":advert.offerAccepted, 
 		"seller":advert.seller,
