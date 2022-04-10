@@ -38,6 +38,7 @@ public class AdvertDAO {
 
 	public void update(Advert advert) {
 		System.out.println("Attempting to update advert");
+		System.out.println(advert);
 
 		em.merge(advert);
 	}
@@ -55,8 +56,8 @@ public class AdvertDAO {
 
 	@SuppressWarnings("unchecked")
     public List<Advert> getAdvertsBySeller(String username) {
-        Query query = em.createQuery("SELECT w FROM Advert w WHERE w.seller LIKE ?1");
-		query.setParameter(1, "%"+username.toUpperCase()+"%");
+        Query query = em.createQuery("SELECT w FROM Advert w WHERE w.seller = ?1");
+		query.setParameter(1, username);
 		return query.getResultList();
     }
 

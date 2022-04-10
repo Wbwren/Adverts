@@ -81,6 +81,9 @@ public class AdvertWS {
 	@Consumes("application/json")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response updateAdvert(Advert advert) {
+		System.out.println(advert.getTitle());
+		System.out.println(advert.getId());
+		System.out.println(advert);
 		System.out.println("edit advert dao");
 		advertDao.update(advert);
 		return Response.status(200).entity(advert).build();

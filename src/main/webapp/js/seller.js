@@ -1,6 +1,5 @@
 var rootUrl = "http://localhost:8080/Adverts"
 
-
 $(document).ready(function(){
     
     // Display logged in username
@@ -81,9 +80,10 @@ var renderList= function(data) {
 		templateStr += '</div></div>';
 		templateStr += '</a>';
 		if(advert.offerAccepted) {
-			templateStr += '<h5>'+'Offer Accepted. Buyer Contact: '+ advert.buyer +' </h5>';
+			templateStr += '<h5>'+'Offer Accepted. Buyer Contact: '+ advert.buyer +' </h5></div>';
 		} else if(advert.largestOffer > 0) {
 			templateStr += '<h5>'+'Offer placed for: ' + advert.largestOffer + '</h5>';
+			templateStr += '<div>Buyer Rating: ' + advert.buyerRating + '<i class="fa-solid fa-star-sharp"></i></div>';
 			templateStr += '<a onclick="acceptOffer('+advert.id+')" href="#">Accept Offer</a></div>';
 		} else {
 			templateStr += '</div>';
@@ -132,17 +132,22 @@ let fetchAdvertId = function () {
 }
 
 
-function populateAdvertFields() {
+async function populateAdvertFields() {
 	let advertId = fetchAdvertId();
-	let advert = fetchAdvertObj(advertId);
+	let advert;
+	try {
+		advert = await fetchAdvertObj(advertId);
+	} catch(e) {
+		console.log(e);
+	}
+	fillFieldData(advert);
 }
 
 function fetchAdvertObj(advertId) {
-	$.ajax({
+	return $.ajax({
 		type: 'GET',
 		url: rootUrl + '/rest/adverts/' + advertId,
-		dataType: "json",
-		success: fillFieldData
+		dataType: "json"
 	});
 }
 
@@ -158,27 +163,43 @@ function fillFieldData(advert) {
 	$('#imageQuaternary').attr('value', advert.imageQuaternary);
 }
 
-$(document).on("click", "#btnEditAdvert", function(e) {
+$(document).on("click", "#btnEditAdvert", async function(e) {
     e.preventDefault();
     $.ajax({
         type: "PUT",
         contentType: "application/json",
         url: rootUrl + "/rest/adverts/edit",
-        data: advertFormToJSON(),
+        data: await advertFormToJSON(),
         success: function(response) {
-            window.location = rootUrl;
+            window.location = rootUrl+'/seller-adverts.html';
 			
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.log('error updating advert...');
-            $("#loginErrorText").show();
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+
         }
     });
     return false;
 });
 
-let advertFormToJSON = function() {
-    return JSON.stringify({
+async function advertFormToJSON() {
+	let advertId = fetchAdvertId();
+	let advert;
+	try {
+		advert = await fetchAdvertObj(advertId);
+	} catch(e) {
+		console.log(e);
+	}
+	console.log(advert.seller);
+	console.log(advert);
+	console.log(advert.largestOffer);
+	console.log(advert.offerAccepted);
+	console.log(advert.seller);
+	console.log(advert.buyer);
+	console.log(advert.buyerRating);
+	return JSON.stringify({
 		"id":fetchAdvertId(),
         "title": $('#advertTitle').val(),
         "askingPrice": $('#advertPrice').val(),
@@ -188,8 +209,15 @@ let advertFormToJSON = function() {
         "imagePrimary": $('#imagePrimary').val(),
         "imageSecondary": $('#imageSecondary').val(),
         "imageTertiary": $('#imageTertiary').val(),
-        "imageQuaternary": $('#imageQuaternary').val()
+        "imageQuaternary": $('#imageQuaternary').val(),
+		//"datePosted": advert.datePosted,
+		"largestOffer": advert.largestOffer,
+		"offerAccepted":advert.offerAccepted, 
+		"seller":advert.seller,
+		"buyer":advert.buyer,
+		"buyerRating": advert.buyerRating
     });
+	
 }
 
 function acceptOffer(advertId) {

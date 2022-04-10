@@ -23,6 +23,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "adverts")
 public class Advert {
 	
+	@Override
+	public String toString() {
+		return "Advert [askingPrice=" + askingPrice + ", buyer=" + buyer + ", buyerRating=" + buyerRating
+				+ ", category=" + category + ", datePosted=" + datePosted + ", description=" + description + ", id="
+				+ id + ", imagePrimary=" + imagePrimary + ", imageQuaternary=" + imageQuaternary + ", imageSecondary="
+				+ imageSecondary + ", imageTertiary=" + imageTertiary + ", largestOffer=" + largestOffer + ", location="
+				+ location + ", offerAccepted=" + offerAccepted + ", seller=" + seller + ", title=" + title + "]";
+	}
+
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 	
@@ -45,6 +54,15 @@ public class Advert {
     private boolean offerAccepted;
     private String seller;
 	private String buyer;
+	private int buyerRating;
+
+	public int getBuyerRating() {
+		return buyerRating;
+	}
+
+	public void setBuyerRating(int buyerRating) {
+		this.buyerRating = buyerRating;
+	}
 
 	public int getId() {
 		return id;
