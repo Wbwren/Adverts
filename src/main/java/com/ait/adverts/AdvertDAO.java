@@ -37,9 +37,6 @@ public class AdvertDAO {
 	}
 
 	public void update(Advert advert) {
-		System.out.println("Attempting to update advert");
-		System.out.println(advert);
-
 		em.merge(advert);
 	}
 
@@ -65,6 +62,12 @@ public class AdvertDAO {
 		System.out.println("accept offer called");
 		Advert advert = em.find(Advert.class, id);
 		advert.setOfferAccepted(true);
+		update(advert);
+    }
+
+	public void markOutForDelivery(int id) {
+		Advert advert = em.find(Advert.class, id);
+		advert.setOutForDelivery(true);
 		update(advert);
     }
 }

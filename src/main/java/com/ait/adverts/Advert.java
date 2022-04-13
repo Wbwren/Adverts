@@ -46,8 +46,6 @@ public class Advert {
     private String imagePrimary;
 	private String imageSecondary;
 	private String imageTertiary;
-
-
 	private String imageQuaternary;
     private Date datePosted;
     private double largestOffer;
@@ -55,6 +53,15 @@ public class Advert {
     private String seller;
 	private String buyer;
 	private int buyerRating;
+	private boolean outForDelivery;
+
+	public boolean isOutForDelivery() {
+		return outForDelivery;
+	}
+
+	public void setOutForDelivery(boolean outForDelivery) {
+		this.outForDelivery = outForDelivery;
+	}
 
 	public int getBuyerRating() {
 		return buyerRating;

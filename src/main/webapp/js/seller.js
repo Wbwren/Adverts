@@ -70,24 +70,49 @@ var renderList= function(data) {
 		templateStr += '<a href="edit-advert.html?advert='+advert.id+'">';
 		templateStr += '<div class="card">';
 		templateStr += '<div class="card-block">';
-		templateStr += '<img class="card-img-top" style="height: 140px; overflow:hidden " src="img/'+advert.imagePrimary+'" alt="Card image cap">';
+		templateStr += '<img class="card-img-top" style="height: 140px; overflow:hidden" src="img/'+advert.imagePrimary+'" alt="Card image cap">';
 		templateStr += '<div class="card-body">';
+
 		templateStr += '<h5 class="card-title">'+ advert.title +'</h5>';
 		templateStr += '<h5 class="card-title">'+ advert.askingPrice +'</h5>';
 		templateStr += '<p class="card-text">'+advert.description+'</p>';
+
 		templateStr += '<div class="card-footer">';
-		templateStr += '<small class="text-muted"><i class="fas fa-clock"></i> Posted: '+ calcPostDate(advert.datePosted) +'<br><i class="fas fa-user"></i> Seller: '+advert.seller+'<br><i class="fas fa-map"></i> Location: '+advert.location+'</small><i class="fa-solid fa-location-dot"></i></div></div>';
-		templateStr += '</div></div>';
+		templateStr += '<small class="text-muted"><i class="fas fa-clock"></i> Posted: '+ calcPostDate(advert.datePosted) +'<br><i class="fas fa-user"></i> Seller: '+advert.seller+'<br><i class="fas fa-map"></i> Location: '+advert.location+'</small><i class="fa-solid fa-location-dot"></i>';
+		templateStr += '</div>';
+
 		templateStr += '</a>';
-		if(advert.offerAccepted) {
-			templateStr += '<h5>'+'Offer Accepted.<br>Buyer Contact: '+ advert.buyer +' </h5></div>';
-		} else if(advert.largestOffer > 0) {
-			templateStr += '<h5>'+'Offer placed for: ' + advert.largestOffer + '</h5>';
-			templateStr += '<div>Buyer Rating: ' + advert.buyerRating + '<i class="fas fa-star"></i></div>';
-			templateStr += '<a onclick="acceptOffer('+advert.id+')" href="#">Accept Offer</a></div>';
+		if(advert.outForDelivery) {
+			templateStr += '<p>Advert Sale Complete</p>';
+			
+			templateStr += '<a onclick="leaveBuyerRating(\''+advert.buyer+'\','+ advert.id+')" href="#">Leave Buyer Rating (1-5):</a>';
+			templateStr += '<select class="form-control form-control-sm" class="ratingScale" id="buyerRatingAdvert'+advert.id+'">'+
+								'<option value="1">1</option>'+
+								'<option value="2">2</option>'+
+								'<option value="3">3</option>'+
+								'<option value="4">4</option>'+
+								'<option value="5">5</option>'+
+							'</select>';
+			templateStr += '<a onclick="removeAddFromSelleriew('+advert.id+')" href="#">Remove From View</a>';
+			templateStr += '</div></div></div></div>';
 		} else {
-			templateStr += '</div>';
+			if(advert.offerAccepted) {
+				templateStr += '<h5>Offer Accepted.<br>Buyer Contact: '+ advert.buyer +'</h5>';
+				if(!advert.outForDelivery) {
+					templateStr += '<strong>Have You Posted This Item?</strong><br>';
+					templateStr += '<a href="#" onclick="markOutForDelivery('+advert.id+')">Mark as Out For Delivery</a></div></div></div></div>';
+				} else {
+					templateStr += '</div></div></div></div>';
+				}
+			} else if(advert.largestOffer > 0) {
+				templateStr += '<h5>'+'Offer placed for: ' + advert.largestOffer + '</h5>';
+				templateStr += '<div>Buyer Rating: ' + advert.buyerRating + '<i class="fas fa-star"></i></div>';
+				templateStr += '<a onclick="acceptOffer('+advert.id+')" href="#">Accept Offer</a></div></div></div></div>';
+			} else {
+				templateStr += '</div></div></div></div>';
+			}
 		}
+
 		if (i === 4) {
 			templateStr += '</div>';
 			i = 1;
@@ -208,7 +233,8 @@ async function advertFormToJSON() {
 		"offerAccepted":advert.offerAccepted, 
 		"seller":advert.seller,
 		"buyer":advert.buyer,
-		"buyerRating": advert.buyerRating
+		"buyerRating": advert.buyerRating,
+		"outForDelivery": advert.outForDelivery
     });
 	
 }
@@ -225,8 +251,61 @@ function acceptOffer(advertId) {
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log('error updating advert...');
-            $("#loginErrorText").show();
         }
     });
     return false;
 };
+
+
+function markOutForDelivery(advertId) {
+	$.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: rootUrl + "/rest/adverts/out-for-delivery/"+advertId,
+        success: function(response) {
+            window.location = rootUrl+'/seller-adverts.html';
+			
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('error updating advert...');
+        }
+    });
+    return false;
+}
+
+function removeAddFromSelleriew(advertId) {
+	$.ajax({
+        type: "DELETE",
+        contentType: "application/json",
+        url: rootUrl + "/rest/adverts/"+advertId,
+        data: advertId,
+        success: function(response) {
+            window.location = rootUrl+'/seller-adverts.html';
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('error deleting advert...');
+        }
+    });
+    return false;
+}
+
+function leaveBuyerRating(buyer, advertId) {
+	let rating = $('#buyerRatingAdvert'+advertId).val();
+	$.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: rootUrl + "/rest/users/rating",
+        data: ,
+        success: function(response) {
+            window.location = rootUrl+'/seller-adverts.html';
+			
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+
+        }
+    });
+    return false;	
+}

@@ -188,7 +188,6 @@ $(document).on("click", "#btnPostAdvert", function(e) {
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log('error posting advert...');
-            $("#loginErrorText").show();
         }
     });
     return false;

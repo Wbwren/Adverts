@@ -1,5 +1,6 @@
 package com.ait.adverts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -41,6 +42,39 @@ public class UserDao {
 	public List<User> findAllUsers() {
 		Query query = em.createQuery("SELECT u FROM User u");
 		return query.getResultList();
+	}
+
+	public void leaveRating(String uid, int r) {
+		Rating rating = new Rating();
+
+		Query query = em.createQuery("SELECT r FROM Rating r");
+		List<Object> ratings = query.getResultList();
+		double total = 0;
+		int count = 0;
+		double average = 0;
+		for (Object rat:ratings) {
+			if (rat instanceof Rating) {
+				total += ((Rating)rat).getRating();
+				count++;
+			}
+		}
+
+		average = total / count;
+		rating.setUserId(uid);
+		rating.setRating(average);
+		em.persist(rating);
+
+		// User user = em.find(User.class, u.getId());
+		// user.
+
+
+
+		// user.setRating(rating);
+
+
+		// Advert advert = em.find(Advert.class, id);
+		// advert.setOfferAccepted(true);
+		// update(advert);
 	}
 
 }

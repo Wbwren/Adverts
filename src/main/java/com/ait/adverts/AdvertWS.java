@@ -70,6 +70,16 @@ public class AdvertWS {
 		return Response.status(200).build();
 	}
 
+	@PUT
+    @Produces({ MediaType.APPLICATION_JSON })
+	@Path("/out-for-delivery/{id}")
+	public Response markOutForDelivery(@PathParam("id") int id) {
+		//advert.setDatePosted(LocalDate.of(2012, 02, 02));
+		advertDao.markOutForDelivery(id);
+		return Response.status(200).build();
+	}
+	
+
 	// private String getDateNow() {
 	// 	DateTimeFormatter format = DateTimeFormatter.ofPattern("YYYY/MMM/dd 'at' HH:mm");
     //     LocalDateTime localDateTime = LocalDateTime.of(2018, 3, 17, 22, 10);
@@ -81,10 +91,6 @@ public class AdvertWS {
 	@Consumes("application/json")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response updateAdvert(Advert advert) {
-		System.out.println(advert.getTitle());
-		System.out.println(advert.getId());
-		System.out.println(advert);
-		System.out.println("edit advert dao");
 		advertDao.update(advert);
 		return Response.status(200).entity(advert).build();
 	}

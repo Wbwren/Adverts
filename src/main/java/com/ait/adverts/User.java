@@ -19,6 +19,7 @@ public class User {
 	private String saltValue;
 	private String hashValue;
     private String userType;
+	private int rating;
 	private static final long serialVersionUID = 3657551019023598980L;
 
     public void setUserType(String userType) {
@@ -70,6 +71,14 @@ public class User {
 	public void setSaltValue(String saltValue) {
 		this.saltValue = saltValue;
     }
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
 
 	@Override
 	public String toString() {
