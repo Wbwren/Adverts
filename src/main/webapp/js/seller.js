@@ -60,7 +60,6 @@ var renderList= function(data) {
 	
 	let i = 1;
 	$.each(list, function(index, advert) {
-        console.log(advert.datePosted);
 	    
 		if (i === 1) {
 			templateStr += '<div class="row hidden-md-up justify-content-md-center">';
@@ -106,7 +105,7 @@ var renderList= function(data) {
 				}
 			} else if(advert.largestOffer > 0) {
 				templateStr += '<h5>'+'Offer placed for: ' + advert.largestOffer + '</h5>';
-				templateStr += '<div>Buyer Rating: ' + advert.buyerRating + '<i class="fas fa-star"></i></div>';
+				templateStr += '<div>Buyer Rating: ' + calculateBuyerRating(advert.buyerId) + '<i class="fas fa-star"></i></div>';
 				templateStr += '<a onclick="acceptOffer('+advert.id+')" href="#">Accept Offer</a></div></div></div></div>';
 			} else {
 				templateStr += '</div></div></div></div>';
@@ -198,12 +197,6 @@ $(document).on("click", "#btnEditAdvert", async function(e) {
         success: function(response) {
             window.location = rootUrl+'/seller-adverts.html';
 			
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR);
-            console.log(textStatus);
-            console.log(errorThrown);
-
         }
     });
     return false;
@@ -248,9 +241,6 @@ function acceptOffer(advertId) {
         success: function(response) {
             window.location = rootUrl+'/seller-adverts.html';
 			
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log('error updating advert...');
         }
     });
     return false;
@@ -264,10 +254,6 @@ function markOutForDelivery(advertId) {
         url: rootUrl + "/rest/adverts/out-for-delivery/"+advertId,
         success: function(response) {
             window.location = rootUrl+'/seller-adverts.html';
-			
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log('error updating advert...');
         }
     });
     return false;
@@ -281,9 +267,6 @@ function removeAddFromSelleriew(advertId) {
         data: advertId,
         success: function(response) {
             window.location = rootUrl+'/seller-adverts.html';
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log('error deleting advert...');
         }
     });
     return false;
@@ -292,9 +275,6 @@ function removeAddFromSelleriew(advertId) {
 async function leaveBuyerRating(buyerId, advertId) {
 	
 	let rating = $('#buyerRatingAdvert'+advertId).val();
-	console.log('rating '+rating);
-	console.log('buyer '+buyerId);
-	console.log('advertId '+advertId);
 	
 	$.ajax({
         type: "PUT",
@@ -304,10 +284,6 @@ async function leaveBuyerRating(buyerId, advertId) {
         success: function(response) {
             window.location = rootUrl+'/seller-adverts.html';
 			
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log('failed to post rating')
-
         }
     });
     return false;
@@ -318,4 +294,24 @@ async function buyerRatingJson(buyerId, rating) {
 		"buyerId":buyerId,
         "rating":rating
     });
+}
+
+function calculateBuyerRating(buyerId) {
+	var rating = 0;
+	$.ajax({
+		type: 'GET',
+		async: false,
+		url: rootUrl + '/rest/users/',
+		dataType: "json",
+		success: function(userList) {
+			for(let i = 0; i < userList.length; i++) {
+				if(userList[i].email == buyerId) {
+					rating += userList[i].ratingTotal / userList[i].numberOfRatings;
+					break;
+				}
+			}
+		},
+	});
+	
+	return Math.round((rating + Number.EPSILON) * 100) / 100;
 }
