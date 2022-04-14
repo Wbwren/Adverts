@@ -22,15 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @Table(name = "adverts")
 public class Advert {
-	
-	@Override
-	public String toString() {
-		return "Advert [askingPrice=" + askingPrice + ", buyer=" + buyer + ", buyerRating=" + buyerRating
-				+ ", category=" + category + ", datePosted=" + datePosted + ", description=" + description + ", id="
-				+ id + ", imagePrimary=" + imagePrimary + ", imageQuaternary=" + imageQuaternary + ", imageSecondary="
-				+ imageSecondary + ", imageTertiary=" + imageTertiary + ", largestOffer=" + largestOffer + ", location="
-				+ location + ", offerAccepted=" + offerAccepted + ", seller=" + seller + ", title=" + title + "]";
-	}
+
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
@@ -51,7 +43,7 @@ public class Advert {
     private double largestOffer;
     private boolean offerAccepted;
     private String seller;
-	private String buyer;
+	private String buyerId;
 	private int buyerRating;
 	private boolean outForDelivery;
 
@@ -87,12 +79,12 @@ public class Advert {
 		this.seller = seller;
 	}
 
-	public String getBuyer() {
-		return buyer;
+	public String getBuyerId() {
+		return buyerId;
 	}
 
-	public void setBuyer(String buyer) {
-		this.buyer = buyer;
+	public void setBuyerId(String buyerId) {
+		this.buyerId = buyerId;
 	}
 
 	public String getTitle() {
@@ -189,6 +181,16 @@ public class Advert {
 
 	public void setOfferAccepted(boolean offerAccepted) {
 		this.offerAccepted = offerAccepted;
+	}
+
+		
+	@Override
+	public String toString() {
+		return "Advert [askingPrice=" + askingPrice + ", buyerId=" + buyerId + ", buyerRating=" + buyerRating
+				+ ", category=" + category + ", datePosted=" + datePosted + ", description=" + description + ", id="
+				+ id + ", imagePrimary=" + imagePrimary + ", imageQuaternary=" + imageQuaternary + ", imageSecondary="
+				+ imageSecondary + ", imageTertiary=" + imageTertiary + ", largestOffer=" + largestOffer + ", location="
+				+ location + ", offerAccepted=" + offerAccepted + ", seller=" + seller + ", title=" + title + "]";
 	}
 }
 

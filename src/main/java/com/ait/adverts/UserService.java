@@ -1,5 +1,6 @@
 package com.ait.adverts;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -28,12 +29,12 @@ public class UserService {
 	public Response saveUser(User user) {
 		List<User> users = userDao.findAllUsers();
 		for(User u : users) {
-			if(user.getUserEmail().equals(u.getUserEmail())) {
+			if(user.getEmail().equals(u.getEmail())) {
 				return Response.status(409).build();
 			}
 		}
 		System.out.println("here");
-		System.out.println(user.getUserEmail());
+		System.out.println(user.getEmail());
 		System.out.println(user.getUserType());
 		userDao.register(user);
 		return Response.status(201).entity(user).build();
@@ -54,8 +55,18 @@ public class UserService {
 	@PUT
     @Path("/rating")
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response rateUser(String userId, int rating) {
+	public Response rateUser(LinkedHashMap req) {
+		
+		System.out.println(req.get("buyerId").getClass());
+		System.out.println(req.get("rating").getClass());
+		int rating = Integer.parseInt((String)req.get("rating"));
+		String userId = (String) req.get("buyerId");
+		
+
 		userDao.leaveRating(userId, rating);
+		System.out.println("here in user service");
+		System.out.println(userId);
+		System.out.println(rating);
 		return Response.status(200).build(); 
 	}
 

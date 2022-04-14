@@ -26,7 +26,7 @@ public class UserDao {
 		Query query = em.createQuery("SELECT u FROM User u");
 		List<User> u = query.getResultList();
 		for(User us: u) {
-			if(us.getUserEmail().equals(user.getUserEmail()) && us.getHashValue().equals(user.getHashValue())) {
+			if(us.getEmail().equals(user.getEmail()) && us.getHashValue().equals(user.getHashValue())) {
 				return us;
 			}
 		}
@@ -45,36 +45,19 @@ public class UserDao {
 	}
 
 	public void leaveRating(String uid, int r) {
-		Rating rating = new Rating();
+		System.out.println("in user dao");
+		System.out.println(uid);
+		System.out.println(r);
+		User user = em.find(User.class, uid);
+		System.out.println("after finding user obj in dao");
+		System.out.println(user);
 
-		Query query = em.createQuery("SELECT r FROM Rating r");
-		List<Object> ratings = query.getResultList();
-		double total = 0;
-		int count = 0;
-		double average = 0;
-		for (Object rat:ratings) {
-			if (rat instanceof Rating) {
-				total += ((Rating)rat).getRating();
-				count++;
-			}
-		}
+		double ratingTotal = user.getRatingTotal();
+		double newRating = ratingTotal + r;
+		user.setRatingTotal(newRating);
+		user.setNumberOfRatings(user.getNumberOfRatings() + 1);
+		em.merge(user);
 
-		average = total / count;
-		rating.setUserId(uid);
-		rating.setRating(average);
-		em.persist(rating);
-
-		// User user = em.find(User.class, u.getId());
-		// user.
-
-
-
-		// user.setRating(rating);
-
-
-		// Advert advert = em.find(Advert.class, id);
-		// advert.setOfferAccepted(true);
-		// update(advert);
 	}
 
 }

@@ -127,7 +127,7 @@ $(document).on("click", "#btnRegister", function(e) {
         url: rootUrl + "/rest/users/register",
         data: regFormToJSON(),
         success: function(response) {
-            sessionStorage.setItem("loggedInUserId", response.userId);
+            sessionStorage.setItem("loggedInUserId", response.email);
             window.location = rootUrl + "/login.html";
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -139,7 +139,7 @@ $(document).on("click", "#btnRegister", function(e) {
 
 var regFormToJSON = function() {
     return JSON.stringify({
-        "userId": $('#userEmail').val(),
+        "email": $('#userEmail').val(),
         "password": $('#userPassword').val(),
         "userType": $('#userType').val()
     });
@@ -155,7 +155,7 @@ $(document).on("click", "#btnLogin", function(e) {
         url: rootUrl + "/rest/users/login",
         data: loginFormToJSON(),
         success: function(response) {
-            sessionStorage.setItem("loggedInUserId", response.userEmail);
+            sessionStorage.setItem("loggedInUserId", response.email);
             window.location = rootUrl;
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -167,7 +167,7 @@ $(document).on("click", "#btnLogin", function(e) {
 
 let loginFormToJSON = function() {
     return JSON.stringify({
-        "userId": $('#loginUserEmail').val(),
+        "email": $('#loginUserEmail').val(),
         "password": $('#loginUserPassword').val(),
     });
 }

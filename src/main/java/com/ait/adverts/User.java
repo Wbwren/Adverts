@@ -8,19 +8,35 @@ import javax.persistence.Id;
 @Entity
 public class User {
 	
-	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int userId;
-	
+	@Id
+	private String email;	
 //  @OneToMany(mappedBy = "seller")
 //  private Set<Advert> adverts = new HashSet<>();
 	
-	private String email;
+	
 	private String password;
 	private String saltValue;
 	private String hashValue;
     private String userType;
-	private int rating;
+	private double ratingTotal;
+	private int numberOfRatings;
 	private static final long serialVersionUID = 3657551019023598980L;
+	
+	public double getRatingTotal() {
+		return ratingTotal;
+	}
+
+	public void setRatingTotal(double ratingTotal) {
+		this.ratingTotal = ratingTotal;
+	}
+
+	public int getNumberOfRatings() {
+		return numberOfRatings;
+	}
+
+	public void setNumberOfRatings(int numberOfRatings) {
+		this.numberOfRatings = numberOfRatings;
+	}
 
     public void setUserType(String userType) {
 		this.userType = userType;
@@ -30,19 +46,11 @@ public class User {
 		return this.userType;
 	}
 
-    public int getId() {
-		return this.userId;
-	}
-
-	public void setId(int userId) {
-		this.userId = userId;
-	}
-
-	public String getUserEmail() {
+	public String getEmail() {
 		return this.email;
 	}
 
-	public void setUserId(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	} 
 
@@ -72,16 +80,8 @@ public class User {
 		this.saltValue = saltValue;
     }
 
-	public int getRating() {
-		return rating;
-	}
-
-	public void setRating(int rating) {
-		this.rating = rating;
-	}
-
 	@Override
 	public String toString() {
-		return "User{" + "userId=" + userId + ", email='" + email + '\'' + ", password='" + password + '\'' + ", hash='" + hashValue + '\'' + ", salt='" + saltValue + '}';
+		return "User{email='" + email + '\'' + ", password='" + password + '\'' + ", hash='" + hashValue + '\'' + ", salt='" + saltValue + '}';
 	}
 }

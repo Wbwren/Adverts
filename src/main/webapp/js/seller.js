@@ -85,7 +85,7 @@ var renderList= function(data) {
 		if(advert.outForDelivery) {
 			templateStr += '<p>Advert Sale Complete</p>';
 			
-			templateStr += '<a onclick="leaveBuyerRating(\''+advert.buyer+'\','+ advert.id+')" href="#">Leave Buyer Rating (1-5):</a>';
+			templateStr += '<a onclick="leaveBuyerRating(\''+advert.buyerId+'\','+ advert.id+')" href="#">Leave Buyer Rating (1-5):</a>';
 			templateStr += '<select class="form-control form-control-sm" class="ratingScale" id="buyerRatingAdvert'+advert.id+'">'+
 								'<option value="1">1</option>'+
 								'<option value="2">2</option>'+
@@ -97,7 +97,7 @@ var renderList= function(data) {
 			templateStr += '</div></div></div></div>';
 		} else {
 			if(advert.offerAccepted) {
-				templateStr += '<h5>Offer Accepted.<br>Buyer Contact: '+ advert.buyer +'</h5>';
+				templateStr += '<h5>Offer Accepted.<br>Buyer Contact: '+ advert.buyerId +'</h5>';
 				if(!advert.outForDelivery) {
 					templateStr += '<strong>Have You Posted This Item?</strong><br>';
 					templateStr += '<a href="#" onclick="markOutForDelivery('+advert.id+')">Mark as Out For Delivery</a></div></div></div></div>';
@@ -232,7 +232,7 @@ async function advertFormToJSON() {
 		"largestOffer": advert.largestOffer,
 		"offerAccepted":advert.offerAccepted, 
 		"seller":advert.seller,
-		"buyer":advert.buyer,
+		"buyerId":advert.buyerId,
 		"buyerRating": advert.buyerRating,
 		"outForDelivery": advert.outForDelivery
     });
@@ -289,23 +289,33 @@ function removeAddFromSelleriew(advertId) {
     return false;
 }
 
-function leaveBuyerRating(buyer, advertId) {
+async function leaveBuyerRating(buyerId, advertId) {
+	
 	let rating = $('#buyerRatingAdvert'+advertId).val();
+	console.log('rating '+rating);
+	console.log('buyer '+buyerId);
+	console.log('advertId '+advertId);
+	
 	$.ajax({
         type: "PUT",
         contentType: "application/json",
         url: rootUrl + "/rest/users/rating",
-        data: ,
+        data: await buyerRatingJson(buyerId, rating),
         success: function(response) {
             window.location = rootUrl+'/seller-adverts.html';
 			
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR);
-            console.log(textStatus);
-            console.log(errorThrown);
+            console.log('failed to post rating')
 
         }
     });
-    return false;	
+    return false;
+}
+
+async function buyerRatingJson(buyerId, rating) {
+	return JSON.stringify({
+		"buyerId":buyerId,
+        "rating":rating
+    });
 }
