@@ -213,14 +213,5 @@ public class Advert {
 		this.offerAccepted = offerAccepted;
 	}
 
-		
-	@Override
-	public String toString() {
-		return "Advert [askingPrice=" + askingPrice + ", buyerId=" + buyerId + ", buyerRating=" + buyerRating
-				+ ", category=" + category + ", datePosted=" + datePosted + ", description=" + description + ", id="
-				+ id + ", imagePrimary=" + imagePrimary + ", imageQuaternary=" + imageQuaternary + ", imageSecondary="
-				+ imageSecondary + ", imageTertiary=" + imageTertiary + ", largestOffer=" + largestOffer + ", location="
-				+ location + ", offerAccepted=" + offerAccepted + ", seller=" + seller + ", title=" + title + "]";
-	}
 }
 

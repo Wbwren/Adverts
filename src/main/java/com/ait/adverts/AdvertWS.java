@@ -46,7 +46,9 @@ public class AdvertWS {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response findAll() {
+		System.out.println("in ws");
 		List<Advert> adverts = advertDao.getAllAdverts();
+		System.out.println("returning: "+adverts);
 		return Response.status(200).entity(adverts).build();
 	}
 

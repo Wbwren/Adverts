@@ -24,7 +24,11 @@ public class AdvertDao {
 	
 	@SuppressWarnings("unchecked")
 	public List<Advert> getAllAdverts() {
+		System.out.println("in dao");
+		
 		Query query=em.createQuery("SELECT a FROM Advert a");
+		
+		System.out.println(query.getClass());
 		return query.getResultList();
 	}
 

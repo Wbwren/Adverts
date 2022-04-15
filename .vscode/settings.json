@@ -1,0 +1,6 @@
+{
+    "karateRunner.karateRunner.default": "_SyncRunner",
+    "karateRunner.karateCli.overrideKarateRunner": false,
+    "karateRunner.karateRunner.promptToSpecify": false,
+    "karateRunner.reports.openAfterEachRun": true
+}

@@ -31,7 +31,6 @@ public class UserDao {
 			}
 		}
 		return null;
-		
 	}
 	
 	public boolean register(User user) {
