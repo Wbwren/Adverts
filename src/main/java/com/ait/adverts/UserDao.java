@@ -45,12 +45,7 @@ public class UserDao {
 	}
 
 	public void leaveRating(String uid, int r) {
-		System.out.println("in user dao");
-		System.out.println(uid);
-		System.out.println(r);
 		User user = em.find(User.class, uid);
-		System.out.println("after finding user obj in dao");
-		System.out.println(user);
 
 		double ratingTotal = user.getRatingTotal();
 		double newRating = ratingTotal + r;

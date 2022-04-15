@@ -16,42 +16,42 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/Adverts">Adverts</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/Adverts">Adverts</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <!-- Seller Options -->
+        <li id="sellerPostAdvert" class="nav-item"><a class="nav-link" href="post-advert.html">Post Advert</a></li>
+        <li id="sellerViewAdverts" class="nav-item"><a class="nav-link" href="seller-adverts.html">View My Adverts</a></li>
+        <!-- Buyer Options -->
+        <li id="buyerViewOffers" class="nav-item"><a class="nav-link" href="buyer-offers-placed.html">Offers Placed</a></li>
+        <li class="nav-item">
+          <form id="searchForm" class="form-inline my-2 my-lg-0">
+            <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search all adverts..."
+              aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </li>
+        <li id="login"><a href="login.html">Login</a></li>
+        <li id="register"><a href="registration.html">Register</a></li>
+        <li id="userProfileNav" class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
+            id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false"></a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Profile</a> <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a id="logOutBtn" class="dropdown-item" href="#">Logout</a>
+          </div>
+        </li>
+      </ul>
 
-            <li class="nav-item"><a class="nav-link" href="post-advert.html">Edit Advert</a></li>
-
-            <li class="nav-item"><a class="nav-link" href="#">Offers
-                Placed</a></li>
-            <li class="nav-item">
-              <form id="searchForm" class="form-inline my-2 my-lg-0">
-                <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search all adverts..."
-                  aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-              </form>
-            </li>
-            <li id="login"><a href="login.html">Login</a></li>
-            <li id="register"><a href="registration.html">Register</a></li>
-            <li id="userProfileNav" class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
-                id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false"></a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Profile</a> <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a id="logOutBtn" class="dropdown-item" href="#">Logout</a>
-              </div>
-            </li>
-          </ul>
-
-        </div>
-      </nav>
+    </div>
+  </nav>
 
     <h6 class="font-weight-light">Edit This Advert</h6>
 

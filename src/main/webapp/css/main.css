@@ -6,6 +6,10 @@
 	display: none;
 }
 
+#sellerPostAdvert, #sellerViewAdverts, #buyerViewOffers {
+	display: none;
+}
+
 /* * { */
 /* 	margin: 0; */
 /* 	padding: 0; */

@@ -59,7 +59,6 @@ public class AdvertDAO {
     }
 
     public void acceptOffer(int id) {
-		System.out.println("accept offer called");
 		Advert advert = em.find(Advert.class, id);
 		advert.setOfferAccepted(true);
 		update(advert);
@@ -69,5 +68,32 @@ public class AdvertDAO {
 		Advert advert = em.find(Advert.class, id);
 		advert.setOutForDelivery(true);
 		update(advert);
+    }
+
+    public boolean placeOffer(int advertId, String buyerId, double offer) {
+		Advert advert = em.find(Advert.class, advertId);
+		double largestOffer = advert.getLargestOffer();
+		if(offer > largestOffer) {
+			advert.setLargestOffer(offer);
+			advert.setBuyerId(buyerId);
+			return true;
+		}
+		return false;
+
+    }
+
+	public List<Advert> getAdvertsByBuyer(String username) {
+		Query query = em.createQuery("SELECT w FROM Advert w WHERE w.buyerId = ?1");
+		query.setParameter(1, username);
+		return query.getResultList();
+	}
+
+    public void toggleRating(String userId, int advertId, String userType) {
+		Advert advert = em.find(Advert.class, advertId);
+		if (userType.equalsIgnoreCase("seller")) {
+			advert.setBuyerLeftRating(true);
+		} else if(userType.equalsIgnoreCase("buyer")) {
+			advert.setSellerLeftRating(true);
+		}
     }
 }

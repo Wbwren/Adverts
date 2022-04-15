@@ -1,18 +1,11 @@
 package com.ait.adverts;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.sql.Date;
+import java.sql.Timestamp;
 
-import javax.ejb.Local;
-import javax.persistence.CascadeType;
-//import javax.xml.bind.annotation.XmlRootElement;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -39,13 +32,33 @@ public class Advert {
 	private String imageSecondary;
 	private String imageTertiary;
 	private String imageQuaternary;
-    private Date datePosted;
+	//@Column(name = "datePosted", columnDefinition = "TIMESTAMP")
+    private Timestamp datePosted;
     private double largestOffer;
     private boolean offerAccepted;
     private String seller;
+	private int sellerRating;
 	private String buyerId;
 	private int buyerRating;
 	private boolean outForDelivery;
+	private boolean buyerLeftRating;
+	private boolean sellerLeftRating;
+
+	public boolean isBuyerLeftRating() {
+		return buyerLeftRating;
+	}
+
+	public void setBuyerLeftRating(boolean buyerLeftRating) {
+		this.buyerLeftRating = buyerLeftRating;
+	}
+
+	public boolean isSellerLeftRating() {
+		return sellerLeftRating;
+	}
+
+	public void setSellerLeftRating(boolean sellerLeftRating) {
+		this.sellerLeftRating = sellerLeftRating;
+	}	
 
 	public boolean isOutForDelivery() {
 		return outForDelivery;
@@ -53,6 +66,14 @@ public class Advert {
 
 	public void setOutForDelivery(boolean outForDelivery) {
 		this.outForDelivery = outForDelivery;
+	}
+
+	public int getSellerRating() {
+		return sellerRating;
+	}
+
+	public void setSellerRating(int sellerRating) {
+		this.sellerRating = sellerRating;
 	}
 
 	public int getBuyerRating() {
@@ -159,11 +180,11 @@ public class Advert {
 		this.imageQuaternary = imageQuaternary;
 	}
 
-	public Date getDatePosted() {
+	public Timestamp getDatePosted() {
 		return datePosted;
 	}
 
-	public void setDatePosted(Date datePosted) {
+	public void setDatePosted(Timestamp datePosted) {
 		this.datePosted = datePosted;
 	}
 

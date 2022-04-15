@@ -1,12 +1,14 @@
 var rootUrl = "http://localhost:8080/Adverts"
 
 $(document).ready(function(){
-    
+
     // Display logged in username
     let userName = sessionStorage.getItem("loggedInUserId");
     let profileElement = null;
     if (userName != null) {
         $('#userProfileNav').show();
+		$('#sellerPostAdvert').show();
+		$('#sellerViewAdverts').show();
         profileElement = $('#navbarDropdown')[0];
         profileElement.innerHTML = userName;
     } else {
@@ -73,7 +75,7 @@ var renderList= function(data) {
 		templateStr += '<div class="card-body">';
 
 		templateStr += '<h5 class="card-title">'+ advert.title +'</h5>';
-		templateStr += '<h5 class="card-title">'+ advert.askingPrice +'</h5>';
+		templateStr += '<h5 class="card-title">Asking Price: $'+ advert.askingPrice +'</h5>';
 		templateStr += '<p class="card-text">'+advert.description+'</p>';
 
 		templateStr += '<div class="card-footer">';
@@ -83,32 +85,41 @@ var renderList= function(data) {
 		templateStr += '</a>';
 		if(advert.outForDelivery) {
 			templateStr += '<p>Advert Sale Complete</p>';
+			if(!advert.sellerLeftRating) {
+				templateStr += '<a onclick="leaveBuyerRating(\''+advert.buyerId+'\','+ advert.id+')" href="#">Leave Buyer Rating (1-5):</a>';
+				templateStr += '<select class="form-control form-control-sm" class="ratingScale" id="buyerRatingAdvert'+advert.id+'">'+
+									'<option value="1">1</option>'+
+									'<option value="2">2</option>'+
+									'<option value="3">3</option>'+
+									'<option value="4">4</option>'+
+									'<option value="5">5</option>'+
+								'</select>';
+				templateStr += '<a onclick="removeAddFromSelleriew('+advert.id+')" href="#">Delete Advert</a></div></div>';
+				templateStr += '</div></div>';
+			}
 			
-			templateStr += '<a onclick="leaveBuyerRating(\''+advert.buyerId+'\','+ advert.id+')" href="#">Leave Buyer Rating (1-5):</a>';
-			templateStr += '<select class="form-control form-control-sm" class="ratingScale" id="buyerRatingAdvert'+advert.id+'">'+
-								'<option value="1">1</option>'+
-								'<option value="2">2</option>'+
-								'<option value="3">3</option>'+
-								'<option value="4">4</option>'+
-								'<option value="5">5</option>'+
-							'</select>';
-			templateStr += '<a onclick="removeAddFromSelleriew('+advert.id+')" href="#">Remove From View</a>';
-			templateStr += '</div></div></div></div>';
 		} else {
 			if(advert.offerAccepted) {
-				templateStr += '<h5>Offer Accepted.<br>Buyer Contact: '+ advert.buyerId +'</h5>';
+				templateStr += '<strong>Offer Accepted.<br>Buyer Contact: '+ advert.buyerId +'</strong><br>';
 				if(!advert.outForDelivery) {
-					templateStr += '<strong>Have You Posted This Item?</strong><br>';
-					templateStr += '<a href="#" onclick="markOutForDelivery('+advert.id+')">Mark as Out For Delivery</a></div></div></div></div>';
+					templateStr += '<a href="#" onclick="markOutForDelivery('+advert.id+')">Mark Out For Delivery</a><br>';
+					templateStr += '<a onclick="removeAddFromSelleriew('+advert.id+')" href="#">Delete Advert</a></div></div>';
+					templateStr += '</div></div>';
+					
 				} else {
-					templateStr += '</div></div></div></div>';
+					templateStr += '<a onclick="removeAddFromSelleriew('+advert.id+')" href="#">Delete Advert</a></div></div>';
+					templateStr += '</div></div>';
 				}
 			} else if(advert.largestOffer > 0) {
-				templateStr += '<h5>'+'Offer placed for: ' + advert.largestOffer + '</h5>';
+				templateStr += '<strong>'+'Offer placed for: $' + advert.largestOffer + '</strong>';
 				templateStr += '<div>Buyer Rating: ' + calculateBuyerRating(advert.buyerId) + '<i class="fas fa-star"></i></div>';
-				templateStr += '<a onclick="acceptOffer('+advert.id+')" href="#">Accept Offer</a></div></div></div></div>';
+				templateStr += '<a onclick="acceptOffer('+advert.id+')" href="#">Accept Offer</a><br>';
+				templateStr += '<a onclick="removeAddFromSelleriew('+advert.id+')" href="#">Delete Advert</a></div></div>';
+				templateStr += '</div></div>';
 			} else {
-				templateStr += '</div></div></div></div>';
+				templateStr += '<strong>'+'No offers yet placed</strong><br>';
+				templateStr += '<a onclick="removeAddFromSelleriew('+advert.id+')" href="#">Delete Advert</a></div></div>';
+				templateStr += '</div></div>';
 			}
 		}
 
@@ -225,6 +236,7 @@ async function advertFormToJSON() {
 		"largestOffer": advert.largestOffer,
 		"offerAccepted":advert.offerAccepted, 
 		"seller":advert.seller,
+		"sellerRating":advert.sellerRating,
 		"buyerId":advert.buyerId,
 		"buyerRating": advert.buyerRating,
 		"outForDelivery": advert.outForDelivery
@@ -272,27 +284,48 @@ function removeAddFromSelleriew(advertId) {
     return false;
 }
 
-async function leaveBuyerRating(buyerId, advertId) {
+async function leaveBuyerRating(sellerId, advertId) {
 	
 	let rating = $('#buyerRatingAdvert'+advertId).val();
-	
+
+
 	$.ajax({
         type: "PUT",
+		async: false,
         contentType: "application/json",
         url: rootUrl + "/rest/users/rating",
-        data: await buyerRatingJson(buyerId, rating),
-        success: function(response) {
-            window.location = rootUrl+'/seller-adverts.html';
-			
-        }
+        data: await buyerRatingJson(sellerId, rating, advertId, getUserType(sellerId)),
     });
+	
     return false;
 }
 
-async function buyerRatingJson(buyerId, rating) {
+function getUserType(userName) {
+    let userTypeFound = null;
+    $.ajax({
+		type: 'GET',
+		async: false,
+		url: rootUrl + '/rest/users/',
+		dataType: "json",
+		success: function(userList) {
+			for(let i = 0; i < userList.length; i++) {
+				if(userList[i].email == userName) {
+                    userTypeFound = userList[i].userType;
+					break;
+				}
+			}
+		},
+	});
+    return userTypeFound;
+}
+
+
+async function buyerRatingJson(userId, rating, advertId, userType) {
 	return JSON.stringify({
-		"buyerId":buyerId,
-        "rating":rating
+		"buyerId":userId,
+        "rating":rating,
+        "advertId":advertId,
+        "userType":userType
     });
 }
 

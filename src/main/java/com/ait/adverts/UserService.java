@@ -23,6 +23,9 @@ public class UserService {
 	@EJB
 	private UserDao userDao = new UserDao();
 
+	@EJB
+	private AdvertDAO advertDao = new AdvertDAO();
+
 	@POST
     @Path("/register")
 	@Produces({MediaType.APPLICATION_JSON})
@@ -33,9 +36,6 @@ public class UserService {
 				return Response.status(409).build();
 			}
 		}
-		System.out.println("here");
-		System.out.println(user.getEmail());
-		System.out.println(user.getUserType());
 		userDao.register(user);
 		return Response.status(201).entity(user).build();
 	}
@@ -57,16 +57,16 @@ public class UserService {
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response rateUser(LinkedHashMap req) {
 		
-		System.out.println(req.get("buyerId").getClass());
-		System.out.println(req.get("rating").getClass());
+		
 		int rating = Integer.parseInt((String)req.get("rating"));
 		String userId = (String) req.get("buyerId");
+		int advertId = (Integer) req.get("advertId");
+		String userType = (String) req.get("userType");
+		
 		
 
 		userDao.leaveRating(userId, rating);
-		System.out.println("here in user service");
-		System.out.println(userId);
-		System.out.println(rating);
+		advertDao.toggleRating(userId, advertId, userType);
 		return Response.status(200).build(); 
 	}
 
