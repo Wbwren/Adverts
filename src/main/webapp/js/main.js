@@ -37,7 +37,8 @@ $(document).ready(function(){
 	
 	$("#searchForm").submit(function(e) {
 	    e.preventDefault();
-	    findByKeyword($('#keyword').val());
+	    findByKeyword($('#keyword').val(), $('#pricerange').val(), $('#includeWarranty')[0].checked);
+        
 	});
 	
 });
@@ -83,10 +84,10 @@ var findAll = function(userName) {
 	});
 }
 
-var findByKeyword = function(title) {
+var findByKeyword = function(title, pricerange, warrantyIncluded) {
 	$.ajax({
 		type: 'GET',
-		url: rootUrl + '/rest/adverts/search/' + title,
+		url: rootUrl + '/rest/adverts/search/' + title+'/'+pricerange+'/'+warrantyIncluded,
 		dataType: "json",
 		success: renderList
 	});
@@ -138,6 +139,7 @@ var renderList= function(data) {
                 templateStr += "<strong>Contact Seller on: " + advert.seller +"</strong><br>";
             } else {
                 templateStr += "<strong>Your Offer: $" + advert.largestOffer + "</strong><br>";
+                templateStr += "<a onclick='withdrawOffer("+advert.id+")' href='#'>Withdraw Offer<a>";
             }
         }
         templateStr += '</div>';
@@ -151,6 +153,20 @@ var renderList= function(data) {
 	$('#advertList').append(templateStr);
 
 };
+
+function withdrawOffer(advertId) {
+    console.log('advert id ='+advertId);
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: rootUrl + "/rest/adverts/withdraw-offer/"+advertId,
+        async: false,
+        success: function(response) {
+            alert('Offer withdrawn successfully');
+            window.location = rootUrl + '/buyer-offers-placed.html';
+        }
+    });
+}
 
 function viewAdvert(advertId) {
     var advert = null 
@@ -307,6 +323,7 @@ let advertFormToJSON = function() {
         "imageSecondary": $('#imageSecondary').val(),
         "imageTertiary": $('#imageTertiary').val(),
         "imageQuaternary": $('#imageQuaternary').val(),
+        "warrantyIncluded":$('#postWarranty')[0].checked,
         "seller": userName,
         "sellerRating": calculateUserRating(userName),
 		"largestOffer": 0,

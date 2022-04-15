@@ -1,8 +1,6 @@
 package com.ait.adverts;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -13,8 +11,6 @@ public class User {
 //  @OneToMany(mappedBy = "seller")
 //  private Set<Advert> adverts = new HashSet<>();
 	
-	
-	private String password;
 	private String saltValue;
 	private String hashValue;
     private String userType;
@@ -52,10 +48,6 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	} 
-
-	public String getPassword() {
-		return this.password;
 	}
 
 	public void setPassword(String password) {
@@ -80,8 +72,5 @@ public class User {
 		this.saltValue = saltValue;
     }
 
-	@Override
-	public String toString() {
-		return "User{email='" + email + '\'' + ", password='" + password + '\'' + ", hash='" + hashValue + '\'' + ", salt='" + saltValue + '}';
-	}
+	
 }

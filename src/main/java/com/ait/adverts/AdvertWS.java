@@ -36,10 +36,10 @@ import org.apache.poi.hssf.record.cf.DataBarFormatting;
 public class AdvertWS {
 	
 	@EJB
-	private AdvertDAO advertDao = new AdvertDAO();
+	private AdvertDao advertDao = new AdvertDao();
 
 	
-	public void setAdvertDao(AdvertDAO advertDao) {
+	public void setAdvertDao(AdvertDao advertDao) {
 		this.advertDao = advertDao;
 	}
 	
@@ -82,6 +82,15 @@ public class AdvertWS {
 		return Response.status(409).build();
 	}
 
+	@PUT
+    @Produces({ MediaType.APPLICATION_JSON })
+	@Path("/withdraw-offer/{id}")
+	public Response withdrawOffer(@PathParam("id") int id) {
+		System.out.println("withdrawing offer on afdvert: "+id);
+		advertDao.withdrawOffer(id);
+		return Response.status(200).build();
+	}
+
 
 	@PUT
     @Produces({ MediaType.APPLICATION_JSON })
@@ -118,10 +127,11 @@ public class AdvertWS {
 		return Response.status(204).build();
 	}
 	
-	@GET @Path("/search/{query}")
+	@GET @Path("/search/{query}/{pricerange}/{warrantyincluded}")
 	@Produces({ MediaType.APPLICATION_JSON,  MediaType.APPLICATION_XML })
-	public List<Advert> findByKeyword(@PathParam("query") String query) {
-		return advertDao.getAdvertsByKeyword(query);
+	public List<Advert> findByKeyword(@PathParam("query") String query, 
+	@PathParam("pricerange") double priceRange, @PathParam("warrantyincluded") boolean warrantyIncluded) {
+		return advertDao.getAdvertsByKeyword(query, priceRange, warrantyIncluded);
 	}
 
 	@GET @Path("/search/seller/{userName}")

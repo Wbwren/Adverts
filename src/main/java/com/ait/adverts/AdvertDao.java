@@ -11,7 +11,7 @@ import javax.persistence.Query;
 
 @Stateless
 @LocalBean
-public class AdvertDAO {
+public class AdvertDao {
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -45,9 +45,20 @@ public class AdvertDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Advert> getAdvertsByKeyword(String keyword) {
-		Query query = em.createQuery("SELECT w FROM Advert w WHERE w.title LIKE ?1");
+	public List<Advert> getAdvertsByKeyword(String keyword, double priceRange, boolean warrantyIncluded) {
+		Query query = null;
+		
+		if(priceRange == 0) {
+			priceRange = Double.MAX_VALUE;
+		}
+		if (warrantyIncluded) {
+			query = em.createQuery("SELECT w FROM Advert w WHERE w.title LIKE ?1 and w.askingPrice < ?2 and w.warrantyIncluded = true");
+
+		} else {
+			query = em.createQuery("SELECT w FROM Advert w WHERE w.title LIKE ?1 and w.askingPrice < ?2");
+		}
 		query.setParameter(1, "%"+keyword.toUpperCase()+"%");
+		query.setParameter(2, priceRange);
 		return query.getResultList();
 	}
 
@@ -95,5 +106,12 @@ public class AdvertDAO {
 		} else if(userType.equalsIgnoreCase("buyer")) {
 			advert.setSellerLeftRating(true);
 		}
+    }
+
+    public void withdrawOffer(int advertId) {
+		Advert advert = em.find(Advert.class, advertId);
+		advert.setLargestOffer(0);
+		advert.setBuyerId(null);
+		update(advert);
     }
 }

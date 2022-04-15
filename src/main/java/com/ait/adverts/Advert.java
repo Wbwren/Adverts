@@ -43,6 +43,15 @@ public class Advert {
 	private boolean outForDelivery;
 	private boolean buyerLeftRating;
 	private boolean sellerLeftRating;
+	private boolean warrantyIncluded;
+
+	public boolean isWarrantyIncluded() {
+		return warrantyIncluded;
+	}
+
+	public void setWarrantyIncluded(boolean warrantyIncluded) {
+		this.warrantyIncluded = warrantyIncluded;
+	}
 
 	public boolean isBuyerLeftRating() {
 		return buyerLeftRating;

@@ -24,7 +24,7 @@ public class UserService {
 	private UserDao userDao = new UserDao();
 
 	@EJB
-	private AdvertDAO advertDao = new AdvertDAO();
+	private AdvertDao advertDao = new AdvertDao();
 
 	@POST
     @Path("/register")
